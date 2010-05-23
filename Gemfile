@@ -1,84 +1,84 @@
+# If you're working on more than one datamapper gem at a time, then it's
+# recommended to create a local Gemfile and use this instead of the git
+# sources. This will make sure that you are  developing against your
+# other local datamapper sources that you currently work on. Gemfile.local
+# will behave identically to the standard Gemfile apart from the fact that
+# it fetches the gems from local paths. This means that you can use the
+# same environment variables, like ADAPTER when running bundle commands.
+# Gemfile.local is added to .gitignore, so you don't need to worry about
+# accidentally checking local development paths into git.
+#
+#   bundle exec rake local_gemfile
+#
+# will give you a Gemfile.local file that points to your local clones of
+# the various datamapper gems. It's assumed that all datamapper repo clones
+# reside in the same directory. You can use the Gemfile.local like so for
+# running any bundle command:
+#
+#   BUNDLE_GEMFILE=Gemfile.local bundle foo
+#
+# To speed up running bundle tasks, it's recommended to run
+#
+#   bundle lock
+#
+# after running 'bundle install' for the first time. This will make 'bundle exec' run
+# a lot faster compared to the unlocked version. With an unlocked bundle you would
+# typically just run 'bundle install' from time to time to fetch the latest sources from
+# upstream. When you locked your bundle, you need to run
+#
+#   bundle install --relock
+#
+# to make sure to fetch the latest updates and then lock the bundle again. Gemfile.lock
+# is added to the .gitignore file, so you don't need to worry about accidentally checking
+# it into version control.
+
 source 'http://rubygems.org'
 
-group :runtime do
+DATAMAPPER = 'git://github.com/datamapper'
+DM_VERSION = '~> 1.0.0.rc2'
 
-  # We bundle both AS and extlib while extlib compatibility needs to be kept around.
-  # require 'dm-core' will ensure that only one is activated at any time though.
-  # This is done by trying to require AS components and fallback to requiring
-  # extlib in case a LoadError was rescued when requiring AS code.
-  #
-  # Due to bundle exec activating all groups in the Gemfile, it's recommended to run
-  #
-  #   bundle install --without quality
-  #
-  # to have a development environment that is able to run the specs. The problem is that
-  # metric_fu activates active_support=2.2.3 if we comment out the gem 'activesupport'
-  # declaration - have a look below for why we would want to do that (and a bit later, for
-  # why that's actually not *strictly* necessary, but recommended)
-  #
-  # To run the specs using AS, leave this Gemfile as it is and just run
-  #
-  #   bundle install --without qality
-  #   ADAPTERS=sqlite3 bundle exec rake spec # or whatever adapter
-  #
-  # To run the specs using extlib, comment out the: gem 'activesupport' line and run
-  #
-  #  bundle install --without quality
-  #  ADAPTERS=sqlite3 bundle exec rake spec # or whatever adapter
-  #
-  # If you want to run the quality tasks as provided by metric_fu and related gems,
-  # you have to run
-  #
-  #   bundle install
-  #   bundle exec rake metrics:all
-  #
-  # Switch back to a bundle without quality gems before trying to run the specs again
-  #
-  #   bundle install --without quality
-  #   ADAPTERS=sqlite3 bundle exec rake spec # or whatever adapter
-  #
-  # It was mentioned above that all this is not *strictly* necessary, and this is true.
-  # Currently dm-core does the following as the first require when checking for AS
-  #
-  #   require 'active_support/core_ext/object/singleton_class'
-  #
-  # Because this method is not present in activesupport <= 3.0.0.beta, dm-core's feature
-  # detection will actually do the "right thing" and fall back to extlib. However, since
-  # this is not the case for all dm-more gems as well, the safest thing to do is to respect
-  # the more tedious workflow for now, as it will at least be guaranteed to work the same
-  # for both dm-core and dm-more.
-  #
-  # Note that this won't be an issue anymore once we dropped support for extlib completely,
-  # or bundler folks decide to support something like "bundle exec --without=foo rake spec"
-  # (which probably is not going to happen anytime soon).
-  #
+group :runtime do # Runtime dependencies (as in the gemspec)
+
+  gem 'dm-core',         DM_VERSION, :git => "#{DATAMAPPER}/dm-core.git"
+  gem 'dm-serializer',   DM_VERSION, :git => "#{DATAMAPPER}/dm-serializer.git"
+
+end
+
+group(:development) do # Development dependencies (as in the gemspec)
+
+  gem 'dm-validations',  DM_VERSION, :git => "#{DATAMAPPER}/dm-validations.git"
+
+  gem 'fakeweb',         '~> 1.2.8'
+  gem 'rake',            '~> 0.8.7'
+  gem 'rspec',           '~> 1.3'
+  gem 'jeweler',         '~> 1.4'
+
+end
+
+group :datamapper do # We need this because we want to pin these dependencies to their git master sources
 
   if ENV['EXTLIB']
-    gem 'extlib',        '~> 0.9.15',      :git => 'git://github.com/datamapper/extlib.git'
+    gem 'extlib',        '~> 0.9.15',      :git => "#{DATAMAPPER}/extlib.git", :require => nil
   else
-    gem 'activesupport', '~> 3.0.0.beta2', :git => 'git://github.com/rails/rails.git', :require => nil
+    gem 'activesupport', '~> 3.0.0.beta3', :git => 'git://github.com/rails/rails.git', :require => nil
   end
 
-  gem 'dm-core',       '~> 0.10.3', :git => 'git://github.com/datamapper/dm-core.git'
-  gem 'dm-serializer', '~> 0.10.3', :git => 'git://github.com/datamapper/dm-more.git'
+  plugins = ENV['PLUGINS'] || ENV['PLUGIN']
+  plugins = plugins.to_s.tr(',', ' ').split(' ').uniq
+
+  plugins.each do |plugin|
+    gem plugin, DM_VERSION, :git => "#{DATAMAPPER}/#{plugin}.git"
+  end
+
 end
 
-group :development do
-  gem 'rake',         '~> 0.8.7'
-  gem 'rspec',        '~> 1.3'
-  gem 'yard',         '~> 0.5'
-  gem 'rcov',         '~> 0.9.7'
-  gem 'jeweler',      '~> 1.4'
-  gem 'data_objects', '~> 0.10.1'
-  gem 'do_sqlite3',   '~> 0.10.1'
-  gem 'do_mysql',     '~> 0.10.1'
-  gem 'do_postgres',  '~> 0.10.1'
-  gem 'fakeweb',      '~> 1.2.7'
-end
+group :quality do # These gems contain rake tasks that check the quality of the source code
 
-group :quality do
-  gem 'yardstick', '~> 0.1'
-  gem 'metric_fu', '~> 1.3'
-  gem 'reek',      '~> 1.2.7'
-  gem 'roodi',     '~> 2.1'
+  gem 'metric_fu',       '~> 1.3'
+  gem 'rcov',            '~> 0.9.7'
+  gem 'reek',            '~> 1.2.7'
+  gem 'roodi',           '~> 2.1'
+  gem 'yard',            '~> 0.5'
+  gem 'yardstick',       '~> 0.1'
+
 end
