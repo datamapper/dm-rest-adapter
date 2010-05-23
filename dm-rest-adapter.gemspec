@@ -17,7 +17,8 @@ Gem::Specification.new do |s|
      "README.rdoc"
   ]
   s.files = [
-    "Gemfile",
+    ".gitignore",
+     "Gemfile",
      "LICENSE",
      "README.rdoc",
      "Rakefile",
@@ -42,7 +43,7 @@ Gem::Specification.new do |s|
      "tasks/yard.rake",
      "tasks/yardstick.rake"
   ]
-  s.homepage = %q{http://github.com/datamapper/dm-more/tree/master/adapters/dm-rest-adapter}
+  s.homepage = %q{http://github.com/datamapper/dm-rest-adapter}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{datamapper}
@@ -61,24 +62,24 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<dm-core>, ["~> 0.10.3"])
-      s.add_runtime_dependency(%q<dm-serializer>, ["~> 0.10.3"])
-      s.add_development_dependency(%q<fakeweb>, ["~> 1.2.7"])
+      s.add_runtime_dependency(%q<dm-core>, ["~> 1.0.0.rc2"])
+      s.add_runtime_dependency(%q<dm-serializer>, ["~> 1.0.0.rc2"])
       s.add_development_dependency(%q<rspec>, ["~> 1.3"])
-      s.add_development_dependency(%q<yard>, ["~> 0.5"])
+      s.add_development_dependency(%q<dm-validations>, ["~> 1.0.0.rc2"])
+      s.add_development_dependency(%q<fakeweb>, ["~> 1.2.7"])
     else
-      s.add_dependency(%q<dm-core>, ["~> 0.10.3"])
-      s.add_dependency(%q<dm-serializer>, ["~> 0.10.3"])
-      s.add_dependency(%q<fakeweb>, ["~> 1.2.7"])
+      s.add_dependency(%q<dm-core>, ["~> 1.0.0.rc2"])
+      s.add_dependency(%q<dm-serializer>, ["~> 1.0.0.rc2"])
       s.add_dependency(%q<rspec>, ["~> 1.3"])
-      s.add_dependency(%q<yard>, ["~> 0.5"])
+      s.add_dependency(%q<dm-validations>, ["~> 1.0.0.rc2"])
+      s.add_dependency(%q<fakeweb>, ["~> 1.2.7"])
     end
   else
-    s.add_dependency(%q<dm-core>, ["~> 0.10.3"])
-    s.add_dependency(%q<dm-serializer>, ["~> 0.10.3"])
-    s.add_dependency(%q<fakeweb>, ["~> 1.2.7"])
+    s.add_dependency(%q<dm-core>, ["~> 1.0.0.rc2"])
+    s.add_dependency(%q<dm-serializer>, ["~> 1.0.0.rc2"])
     s.add_dependency(%q<rspec>, ["~> 1.3"])
-    s.add_dependency(%q<yard>, ["~> 0.5"])
+    s.add_dependency(%q<dm-validations>, ["~> 1.0.0.rc2"])
+    s.add_dependency(%q<fakeweb>, ["~> 1.2.7"])
   end
 end
 
