@@ -6,9 +6,9 @@ require 'addressable/uri'
 require 'dm-core'
 require 'dm-serializer'
 
-require 'rest_adapter/adapter'
-require 'rest_adapter/connection'
-require 'rest_adapter/formats'
-require 'rest_adapter/exceptions'
+require 'dm-rest-adapter/adapter'
+require 'dm-rest-adapter/connection'
+require 'dm-rest-adapter/formats'
+require 'dm-rest-adapter/exceptions'
 
 DataMapper::Adapters::RestAdapter = DataMapperRest::Adapter

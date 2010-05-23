@@ -18,7 +18,7 @@ $LOAD_PATH.unshift(lib) if File.directory?(lib)
 # Support running specs with 'rake spec' and 'spec'
 $LOAD_PATH.unshift('lib') unless $LOAD_PATH.include?('lib')
 
-require 'rest_adapter'
+require 'dm-rest-adapter'
 
 ROOT = Pathname(__FILE__).dirname.parent
 
