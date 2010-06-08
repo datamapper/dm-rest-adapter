@@ -15,11 +15,11 @@ begin
 
     gem.rubyforge_project = 'datamapper'
 
-    gem.add_dependency 'dm-core',       '~> 1.0.0.rc3'
-    gem.add_dependency 'dm-serializer', '~> 1.0.0.rc3'
+    gem.add_dependency 'dm-core',       '~> 1.0.0'
+    gem.add_dependency 'dm-serializer', '~> 1.0.0'
 
     gem.add_development_dependency 'rspec',          '~> 1.3'
-    gem.add_development_dependency 'dm-validations', '~> 1.0.0.rc3'
+    gem.add_development_dependency 'dm-validations', '~> 1.0.0'
     gem.add_development_dependency 'fakeweb',        '~> 1.2.7'
   end
 
