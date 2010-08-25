@@ -60,7 +60,7 @@ group :datamapper do # We need this because we want to pin these dependencies to
   if ENV['EXTLIB']
     gem 'extlib',        '~> 0.9.15',      :git => "#{DATAMAPPER}/extlib.git", :require => nil
   else
-    gem 'activesupport', '~> 3.0.0.beta3', :git => 'git://github.com/rails/rails.git', :require => nil
+    gem 'activesupport', '~> 3.0.0.rc2',   :git => 'git://github.com/rails/rails.git', :branch => '3-0-stable', :require => nil
   end
 
   plugins = ENV['PLUGINS'] || ENV['PLUGIN']
