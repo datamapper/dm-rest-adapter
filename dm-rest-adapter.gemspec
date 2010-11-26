@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Scott Burton @ Joyent Inc"]
-  s.date = %q{2010-09-07}
+  s.date = %q{2010-11-26}
   s.description = %q{REST Adapter for DataMapper}
   s.email = %q{scott.burton [a] joyent [d] com}
   s.extra_rdoc_files = [
@@ -37,9 +37,6 @@ Gem::Specification.new do |s|
      "spec/semipublic/rest_adapter_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
-     "tasks/ci.rake",
-     "tasks/local_gemfile.rake",
-     "tasks/metrics.rake",
      "tasks/spec.rake",
      "tasks/yard.rake",
      "tasks/yardstick.rake"
