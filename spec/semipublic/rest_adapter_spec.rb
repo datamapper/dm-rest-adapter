@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+
 describe DataMapper::Adapters::RestAdapter do
   before :all do
     @adapter = DataMapper::Repository.adapters[:default]
@@ -10,9 +11,43 @@ describe DataMapper::Adapters::RestAdapter do
   end
 
   describe '#create' do
+
+    before :all do
+      body = <<-XML.compress_lines
+          <book>
+            <id type='datamapper::types::serial'>1</id>
+            <created_at type='datetime'>2009-05-17T22:38:42-07:00</created_at>
+            <title>DataMapper</title>
+            <author>Dan Kubb</author>
+          </book>
+      XML
+
+      headers = { 'Content-Length' => body.respond_to?(:bytesize) ? body.bytesize : body.size }
+
+      FakeWeb.register_uri(:post, 'http://admin:secret@localhost:4000/books.xml', :status => 200, :headers => headers, :body => body)
+    end
+
     describe 'when provided a Resource' do
+
       before :all do
-        body = <<-XML.compress_lines
+        @resource  = Book.new(:created_at => DateTime.parse('2009-05-17T22:38:42-07:00'), :title => 'DataMapper', :author => 'Dan Kubb')
+        @resources = [ @resource ]
+
+        @response = @adapter.create(@resources)
+      end
+
+      it 'should return an Array containing the Resource' do
+        @response.should equal(@resources)
+      end
+
+      it 'should set the identity field' do
+        @resource.id.should == 1
+      end
+    end
+
+    describe 'when provided a Resource with a model name different than storage name' do
+      before :all do
+        body = <<-XML.compress_lines 
           <book>
             <id type='datamapper::types::serial'>1</id>
             <created_at type='datetime'>2009-05-17T22:38:42-07:00</created_at>
@@ -27,7 +62,9 @@ describe DataMapper::Adapters::RestAdapter do
       end
 
       before :all do
-        @resource  = Book.new(:created_at => DateTime.parse('2009-05-17T22:38:42-07:00'), :title => 'DataMapper', :author => 'Dan Kubb')
+        @resource  = BookResource.new(:created_at => DateTime.parse('2009-05-17T22:38:42-07:00'), :title => 'DataMapper', :author => 'Dan Kubb')
+        BookResource.storage_names[:default] = "books" 
+
         @resources = [ @resource ]
 
         @response = @adapter.create(@resources)
@@ -203,19 +240,42 @@ describe DataMapper::Adapters::RestAdapter do
       FakeWeb.register_uri(:put, 'http://admin:secret@localhost:4000/books/1.xml', :status => 200, :headers => headers, :body => body)
     end
 
-    before :all do
-      @resources = Book.all
+    describe "update a Resource" do
 
-      @response = @adapter.update({ Book.properties[:author] => 'John Doe' }, @resources)
+      before :all do
+        @resources = Book.all
+
+        @response = @adapter.update({ Book.properties[:author] => 'John Doe' }, @resources)
+      end
+
+      it 'should return the number of updated Resources' do
+        @response.should == 1
+      end
+
+      it 'should modify the Resource' do
+        @resources.first.author.should == 'John Doe'
+      end
     end
 
-    it 'should return the number of updated Resources' do
-      @response.should == 1
+    describe "update a Resource with name different than storage name" do
+
+      before :all do
+        BookResource.storage_names[:default] = "books"
+        @resources = BookResource.all
+
+        @response = @adapter.update({ BookResource.properties[:author] => 'John Doe' }, @resources)
+      end
+
+      it 'should return the number of updated Resources' do
+        @response.should == 1
+      end
+
+      it 'should modify the Resource' do
+        @resources.first.author.should == 'John Doe'
+      end
     end
 
-    it 'should modify the Resource' do
-      @resources.first.author.should == 'John Doe'
-    end
+
   end
 
   describe '#delete' do

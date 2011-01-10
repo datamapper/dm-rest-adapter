@@ -8,7 +8,7 @@ module DataMapperRest
       resources.each do |resource|
         model = resource.model
 
-        response = connection.http_post("#{resource_name(model)}", resource.to_xml)
+        response = connection.http_post("#{resource_name(model)}", resource.to_xml(:element_name => resource_name(model).singularize))
 
         update_with_response(resource, response)
       end
@@ -40,7 +40,7 @@ module DataMapperRest
 
         dirty_attributes.each { |p, v| p.set!(resource, v) }
 
-        response = connection.http_put("#{resource_name(model)}/#{id}", resource.to_xml)
+        response = connection.http_put("#{resource_name(model)}/#{id}", resource.to_xml(:element_name => resource_name(model).singularize))
 
         update_with_response(resource, response)
       end.size
