@@ -21,7 +21,7 @@ group(:development) do # Development dependencies (as in the gemspec)
   gem 'fakeweb',         '~> 1.3'
   gem 'rake',            '~> 0.8.7'
   gem 'rspec',           '~> 1.3.1'
-  gem 'jeweler',         '~> 1.4.0'
+  gem 'jeweler',         '~> 1.5.2'
 
 end
 
@@ -30,7 +30,7 @@ group :datamapper do # We need this because we want to pin these dependencies to
   if ENV['EXTLIB']
     gem 'extlib',        '~> 0.9.15', SOURCE => "#{DATAMAPPER}/extlib#{REPO_POSTFIX}", :require => nil
   else
-    gem 'activesupport', '~> 3.0.3',  :require => nil
+    gem 'activesupport', '~> 3.0.4',  :require => nil
   end
 
   plugins = ENV['PLUGINS'] || ENV['PLUGIN']
