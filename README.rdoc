@@ -4,15 +4,15 @@ A DataMapper adapter for REST Web Services
 
 == Usage
 
-DM Rest Adapter requires the use of a model which is the same name 
-as the resource you are using. For example, if you have a resource 
-named "posts" you will create a standard datamapper object called 
-post.rb in app/models. The only difference in this model is you will 
-need to define the rest adapter for the model. 
+DM Rest Adapter requires the use of a model which is the same name
+as the resource you are using. For example, if you have a resource
+named "posts" you will create a standard datamapper object called
+post.rb in app/models. The only difference in this model is you will
+need to define the rest adapter for the model.
 
-The following is an example of a post model, where the host settings 
-point to the app you are running the resource on. In addition I have 
-included a basic auth login which will be used if your resource 
+The following is an example of a post model, where the host settings
+point to the app you are running the resource on. In addition I have
+included a basic auth login which will be used if your resource
 requires auth:
 
  DataMapper.setup(:default, {
@@ -35,21 +35,21 @@ requires auth:
  end
 
 
-If you notice this looks exactly like a normal datmapper model. 
-Every property you define will map itself with the xml returned 
+If you notice this looks exactly like a normal datmapper model.
+Every property you define will map itself with the xml returned
 or posted from/to the resource.
 
 == Code
 
-Now for some code examples. DM Rest Adapter uses the same 
+Now for some code examples. DM Rest Adapter uses the same
 methods as datamapper including during creation.
 
- Post.first 
+ Post.first
  # => returns the object from the resouce
- Post.get(1) 
+ Post.get(1)
  # => returns the object from the resource
  p = Post.new(:title => "My awesome blog post", :body => "I really have nothing to say...")
- p.save 
+ p.save
  # => saves the resource on the remote
 
 == Caveat
@@ -60,4 +60,3 @@ Posts do not honor RESTful HTTP status codes. I might fix this...
 
 Nested resources
 Put verb actions
-
