@@ -30,6 +30,7 @@ group :datamapper do # We need this because we want to pin these dependencies to
   if ENV['EXTLIB']
     gem 'extlib',        '~> 0.9.15', SOURCE => "#{DATAMAPPER}/extlib#{REPO_POSTFIX}", :require => nil
   else
+    gem 'i18n',          '~> 0.5.0'
     gem 'activesupport', '~> 3.0.4',  :require => nil
   end
 
