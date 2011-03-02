@@ -12,7 +12,7 @@ describe DataMapper::Adapters::RestAdapter do
   describe '#create' do
     describe 'when provided a Resource' do
       before :all do
-        body = <<-XML.compress_lines
+        body = DataMapper::Ext::String.compress_lines(<<-XML)
           <book>
             <id type='datamapper::types::serial'>1</id>
             <created_at type='datetime'>2009-05-17T22:38:42-07:00</created_at>
@@ -46,7 +46,7 @@ describe DataMapper::Adapters::RestAdapter do
   describe '#read' do
     describe 'with unscoped query' do
       before :all do
-        body = <<-XML.compress_lines
+        body = DataMapper::Ext::String.compress_lines(<<-XML)
           <books>
             <book>
               <id type='datamapper::types::serial'>1</id>
@@ -82,7 +82,7 @@ describe DataMapper::Adapters::RestAdapter do
       before :all do
         @query = Book.all(:id => 1, :limit => 1).query
 
-        body = <<-XML.compress_lines
+        body = DataMapper::Ext::String.compress_lines(<<-XML)
           <book>
             <id type='datamapper::types::serial'>1</id>
             <created_at type='datetime'>2009-05-17T22:38:42-07:00</created_at>
@@ -105,7 +105,7 @@ describe DataMapper::Adapters::RestAdapter do
 
     describe 'with query scoped by a non-key' do
       before :all do
-        body = <<-XML.compress_lines
+        body = DataMapper::Ext::String.compress_lines(<<-XML)
           <books>
             <book>
               <id type='datamapper::types::serial'>1</id>
@@ -142,7 +142,7 @@ describe DataMapper::Adapters::RestAdapter do
 
     describe 'with a non-standard model <=> storage_name relationship' do
       before :all do
-        body = <<-XML.compress_lines
+        body = DataMapper::Ext::String.compress_lines(<<-XML)
           <books>
             <book>
               <id type='datamapper::types::serial'>1</id>
@@ -172,7 +172,7 @@ describe DataMapper::Adapters::RestAdapter do
 
   describe '#update' do
     before :all do
-      body = <<-XML.compress_lines
+      body = DataMapper::Ext::String.compress_lines(<<-XML)
         <books>
           <book>
             <id type='datamapper::types::serial'>1</id>
@@ -189,7 +189,7 @@ describe DataMapper::Adapters::RestAdapter do
     end
 
     before :all do
-      body = <<-XML.compress_lines
+      body = DataMapper::Ext::String.compress_lines(<<-XML)
         <book>
           <id type='datamapper::types::serial'>1</id>
           <created_at type='datetime'>2009-05-17T22:38:42-07:00</created_at>
@@ -220,7 +220,7 @@ describe DataMapper::Adapters::RestAdapter do
 
   describe '#delete' do
     before :all do
-      body = <<-XML.compress_lines
+      body = DataMapper::Ext::String.compress_lines(<<-XML)
         <books>
           <book>
             <id type='datamapper::types::serial'>1</id>
