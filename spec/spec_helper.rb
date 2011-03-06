@@ -12,6 +12,6 @@ ROOT = Pathname(__FILE__).dirname.parent
 
 DataMapper.setup(:default, 'rest://admin:secret@localhost:4000/?format=xml')
 
-Dir[ROOT / 'spec' / 'fixtures' / '**' / '*.rb'].each { |rb| require rb }
+Pathname.glob((ROOT + 'spec/fixtures/**/*.rb').to_s).each { |file| require file }
 
 FakeWeb.allow_net_connect = false
