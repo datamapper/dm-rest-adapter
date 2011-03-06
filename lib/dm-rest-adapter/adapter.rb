@@ -155,7 +155,7 @@ module DataMapperRest
     end
 
     def update_with_response(resource, response)
-      return unless response.kind_of?(Net::HTTPSuccess) && !response.body.blank?
+      return unless response.kind_of?(Net::HTTPSuccess) && !DataMapper::Ext.blank?(response.body)
 
       model      = resource.model
       properties = model.properties(name)
