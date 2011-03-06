@@ -147,7 +147,7 @@ module DataMapperRest
     end
 
     def element_name(model)
-      model.storage_name(self.name).singularize
+      DataMapper::Inflector.singularize(model.storage_name(self.name))
     end
 
     def resource_name(model)

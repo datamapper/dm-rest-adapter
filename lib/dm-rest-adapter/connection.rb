@@ -1,13 +1,5 @@
 require 'net/http'
-
-begin
-  require 'active_support/inflector'
-rescue LoadError
-  require 'extlib/inflection'
-  module ActiveSupport
-    Inflector = Extlib::Inflection unless defined?(Inflector)
-  end
-end
+require 'dm-core/support/inflector'
 
 module DataMapperRest
   # Somewhat stolen from ActiveResource
@@ -40,7 +32,7 @@ module DataMapperRest
 
       def run_verb(verb, data = nil)
         request do |http|
-          klass = DataMapper::Ext::Module.find_const(Net::HTTP, ActiveSupport::Inflector.camelize(verb))
+          klass = DataMapper::Ext::Module.find_const(Net::HTTP, DataMapper::Inflector.camelize(verb))
           request = klass.new(@uri.to_s, @format.header)
           request.basic_auth(@uri.user, @uri.password) if @uri.user && @uri.password
           result = http.request(request, data)
