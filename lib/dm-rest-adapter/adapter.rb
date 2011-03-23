@@ -129,16 +129,14 @@ module DataMapperRest
         raise "No root element matching #{element_name} in xml"
       end
 
-      pairs = model.properties(name).map { |p| [ p.field, p ] }
-      field_to_property = DataMapper::Ext::Array.to_hash(pairs)
+      field_to_property = Hash[ model.properties(name).map { |p| [ p.field, p ] } ]
       record_from_rexml(entity_element, field_to_property)
     end
 
     def parse_resources(xml, model)
       doc = REXML::Document::new(xml)
 
-      pairs = model.properties(name).map { |p| [ p.field, p ] }
-      field_to_property = DataMapper::Ext::Array.to_hash(pairs)
+      field_to_property = Hash[ model.properties(name).map { |p| [ p.field, p ] } ]
       element_name      = element_name(model)
 
       doc.elements.collect("/#{resource_name(model)}/#{element_name}") do |entity_element|
