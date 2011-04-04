@@ -1,5 +1,4 @@
 require 'net/http'
-require 'dm-core/support/inflector'
 
 module DataMapperRest
   # Somewhat stolen from ActiveResource
