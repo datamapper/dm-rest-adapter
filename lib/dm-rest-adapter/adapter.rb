@@ -83,7 +83,7 @@ module DataMapperRest
             :path         => @options[:path],
             :query_values => query,
             :fragment     => @options[:fragment]
-          ).freeze
+          )
         end
     end
 
