@@ -15,3 +15,9 @@ DataMapper.setup(:default, 'rest://admin:secret@localhost:4000/?format=xml')
 Pathname.glob((ROOT + 'spec/fixtures/**/*.rb').to_s).each { |file| require file }
 
 FakeWeb.allow_net_connect = false
+
+Spec::Runner.configure do |config|
+  config.before :suite do
+    DataMapper.finalize
+  end
+end
