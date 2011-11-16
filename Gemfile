@@ -1,6 +1,8 @@
 require 'pathname'
 
-source 'http://rubygems.org'
+source :rubygems
+
+gemspec
 
 SOURCE         = ENV.fetch('SOURCE', :git).to_sym
 REPO_POSTFIX   = SOURCE == :path ? ''                                : '.git'
@@ -13,16 +15,9 @@ gem 'dm-serializer', DM_VERSION,
   :branch => CURRENT_BRANCH
 
 group :development do
-
   gem 'dm-validations', DM_VERSION,
     SOURCE  => "#{DATAMAPPER}/dm-validations#{REPO_POSTFIX}",
     :branch => CURRENT_BRANCH
-
-  gem 'fakeweb',        '~> 1.3'
-  gem 'jeweler',        '~> 1.6.4'
-  gem 'rake',           '~> 0.9.2'
-  gem 'rspec',          '~> 1.3.2'
-
 end
 
 platforms :mri_18 do
